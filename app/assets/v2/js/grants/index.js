@@ -117,7 +117,8 @@ if (document.getElementById('grants-showcase')) {
       observer: null,
       observed: null,
       sticky_active: false,
-      fetchedPages: []
+      fetchedPages: [],
+      activeTimeout: null,
     },
     methods: {
       toggleStyle: function(style) {
@@ -177,6 +178,15 @@ if (document.getElementById('grants-showcase')) {
           vm.updateUrlParams();
 
         }
+      },
+      delayedChangeQuery: function() {
+        if (this.activeTimeout) {
+          window.clearTimeout(this.activeTimeout);
+        }
+        this.activeTimeout = setTimeout(() => {
+          this.changeQuery({page: 1});
+          this.activeTimeout = null;
+        }, 500);
       },
       filterCollection: function(collectionId) {
         let vm = this;
